@@ -1,0 +1,275 @@
+
+#Assigning Screens to ScreenManagement
+
+ScreenManagement:
+    WelcomeScreen:
+    MainScreen
+    AddScreen:
+    ManipScreen:
+    SearchScreen:
+    SaScreen:
+    DeleteScreen
+    UpdateScreen
+
+
+<MySpinnerOption@SpinnerOption>:
+    text_size: self.width,None
+#Defining widgets for various screens. Functions reference to Associated Classes
+<WelcomeScreen>:
+
+    on_enter: self.change
+
+    canvas.before:
+
+        BorderImage:
+
+            border: 10,10,10,10
+
+            pos: self.pos
+
+            size: self.size
+
+            source: 'bg.jpg'
+
+    name: "Welcome"
+    AnchorLayout:
+
+        anchor_x: 'center'
+
+        anchor_y: 'center'
+
+        Image:
+
+            source: 'icon.jpg'
+
+            size_hint: None, None
+
+            size: 150,150
+
+<MainScreen>:
+    canvas.before:
+        BorderImage:
+            border: 10,10,10,10
+            pos: self.pos
+            size: self.size
+            source: 'bg.jpg'
+    name: "main"
+    BoxLayout:
+        orientation: "vertical"
+        BoxLayout:
+            MDFillRoundFlatIconButton:
+                size_hint:1,.5
+                pos_hint:{"center_x": 0.5,"center_y": 0.7}
+                text:"ADD RECORDS"
+                on_release: root.add()
+        BoxLayout:
+            MDFillRoundFlatIconButton:
+                size_hint:1,.5
+                pos_hint:{"center_x": 0.5,"center_y": 0.5}
+                text:"MANIPULATE EXISTING RECORDS"
+                on_release: root.manip()
+        BoxLayout:
+            MDFillRoundFlatIconButton:
+                size_hint:1,.5
+                pos_hint:{"center_x": 0.5,"center_y": 0.3}
+                text:"SEARCH"
+                on_release: root.search()
+        BoxLayout:
+            MDFillRoundFlatIconButton:
+                size_hint:1,.5
+                pos_hint:{"center_x": 0.5,"center_y": 0.13}
+                text:"SEE ALL"
+                on_release: root.sa()
+<addScreen>:
+    canvas.before:
+        BorderImage:
+            border: 10,10,10,10
+            pos:self.pos
+            size: self.size
+            source: 'bg.jpg'
+    name: "add"
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            Label:
+                text: "Enter Book Number"
+            TextInput:
+                id:num
+                hint_text:"Enter Book Number"
+                #input_filter : 'int'
+                #multiline:False
+        BoxLayout:
+            Label:
+                text: "Enter Price of Book"
+            TextInput:
+                id:pri
+                hint_text:"Enter Price of Book"
+                #input_filter : 'int'
+                #multiline:False
+        BoxLayout:
+            Label:
+                text: "Enter author of Book."
+            TextInput:
+                id:auth
+                hint_text:"Enter author of Book"
+                #multiline:False
+        BoxLayout:
+            Label:
+                text: "Enter Name of Book"
+            TextInput:
+                id:nam
+                hint_text:"Enter Name of Book"
+                #multiline:False
+        BoxLayout:
+            Label:
+                text: "Enter Quantity of Book"
+            TextInput:
+                id:quan
+                hint_text:"Enter Quantity of Book"
+                #input_filter : 'int'
+                #multiline:False
+        MDFillRoundFlatIconButton:
+            size_hint:1,.5
+            pos_hint:{"center_x": 0.5}
+            text:"Add Record"
+            on_release: root.createfile()
+<ManipScreen>:
+    name:"manip"
+    BoxLayout:
+        orientation:"vertical"
+        BoxLayout
+            
+            MDFillRoundFlatIconButton:
+                size_hint: 1,.25            
+                pos_hint:{"center_x": 0.5,"center_y": 0.1}
+                text:"DELETE RECORDS"
+                on_press:root.delete()
+        BoxLayout:
+            MDFillRoundFlatIconButton:
+                size_hint: 1,.25 
+                pos_hint:{"center_x": 0.5,"center_y": 0.5}
+                text:"UPDATE EXISTING RECORDS"
+                on_press:root.update()
+<DeleteScreen>:
+    on_enter: root.set_spinner() #Will update spinner with book number values upon entering the screen
+    name:"del"
+    BoxLayout:
+        orientation:"vertical"
+        BoxLayout:
+            orientation:"horizontal"
+            Spinner:
+                text:"Select Unique Book Number of Record to be deleted"
+                id:my_spinner
+        MDFillRoundFlatIconButton:
+            size_hint:1,.1
+            pos_hint:{"center_x": 0.5}
+            text:"DELETE"
+            on_release:root.delfunc()
+<UpdateScreen>:
+    name:"update"
+    on_enter : root.spinner_set()
+    BoxLayout:
+        orientation:"vertical"
+        Spinner:
+            id: spin_num
+            text:"Select Book Number To Update."
+        Spinner:
+            id:spin
+            text:"Select Value to be updated"
+            values:'Book Number','Price Of Book','Author Of Book','Name Of Book','Quantity Of Book'
+        Label:
+            text:"Enter New Value"
+        TextInput:
+            id:newv
+        MDFillRoundFlatIconButton:
+            size_hint:1,.5
+            pos_hint:{"center_x": 0.5}
+            text:"UPDATE"
+            on_release:root.updat()
+
+
+    
+<SearchScreen>:
+    name: "search"
+    on_enter: root.extr()
+    BoxLayout:
+        orientation:"vertical"
+        BoxLayout:
+            orientation : 'horizontal'
+            Label:
+                text:"Search By:"
+            Spinner:
+                id:by
+                text: "Select Value"
+
+                values:'Book Number','Price Of Book','Author Of Book','Name Of Book','Quantity Of Book'
+        Label:
+            text:"Enter Query"
+        TextInput:
+            id:query
+        Spinner:
+            id:search_result
+            text:"Result will be shown here."
+            values : '-'
+            option_cls: "MySpinnerOption"
+        MDFillRoundFlatIconButton:
+            size_hint:1,.5
+            pos_hint:{"center_x": 0.5}
+            text:"SEARCH"
+            on_release:root.srs()
+
+            
+ 
+
+
+
+
+
+
+
+
+
+
+
+<SaScreen>
+
+    name: "sa"
+    on_enter : root.set_spinnerres()
+    Spinner:
+        size_hint: 1,.2
+        id:allres
+        text:"Click Here to see all entries in the form of a dropdown."
+        values : '-'
+        option_cls: "MySpinnerOption"
+        pos_hint:{"top":.5}
+
+
+
+        
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
